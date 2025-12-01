@@ -1,11 +1,17 @@
 // alert("Hi");
-let userForm = document.querySelector("#user-form");
-let userName = document.querySelector("#user-name");
-let languages = document.querySelector(".languages");
-let searchTerm = document.querySelector("#search-term");
-let repos = document.querySelector(".repos");
+const userForm = document.querySelector("#user-form");
+const userName = document.querySelector("#user-name");
+const languages = document.querySelector(".languages");
+const searchTerm = document.querySelector("#search-term");
+const repos = document.querySelector(".repos");
+const themeToggle = document.querySelector(".theme-toggle");
+const darkIcon = "<i class='fa-solid fa-moon'></i>";
+const lightIcon = "<i class='fa-solid fa-sun'></i>";
+
+themeToggle.innerHTML = darkIcon;
 
 userForm.addEventListener("submit", submitHandler);
+languages.addEventListener("click", languageHandler);
 
 function submitHandler(e) {
   e.preventDefault();
@@ -44,6 +50,27 @@ function displayUserRepos(reposData, repoTerm) {
   });
 }
 
+function languageHandler(e) {
+  let language = e.target.getAttribute("data-language");
+  console.log(language);
+  if (language) {
+    repos.innerHTML = "";
+    getLanguageRepos(language);
+  }
+}
+
+function getLanguageRepos(languageItem) {
+  const apiURL = "https://api.github.com/search/repositories?q=" + languageItem;
+  fetch(apiURL)
+    .then((res) => res.json())
+    .then((data) => displayUserRepos(data.items, languageItem))
+    .catch((err) => console.log(err));
+}
+
+/**
+ * Dark mode
+ */
+
 // Get the button element
 const toggle = document.querySelector(".theme-toggle");
 
@@ -55,8 +82,10 @@ toggle.addEventListener("click", () => {
   // Toggle the value between 'light' and 'dark'
   if (theme === "light") {
     theme = "dark";
+    themeToggle.innerHTML = lightIcon;
   } else {
     theme = "light";
+    themeToggle.innerHTML = darkIcon;
   }
 
   // Update the HTML attribute
