@@ -34,6 +34,19 @@ function getUserRepos(reposUser) {
 }
 
 function displayUserRepos(reposData, repoTerm) {
+  console.log(reposData);
+  if (!Array.isArray(reposData)) {
+    searchTerm.textContent = "User not found!";
+    repos.innerHTML = "";
+    return;
+  }
+
+  if (reposData.length === 0) {
+    searchTerm.textContent = "No repo found!";
+    repos.innerHTML = "";
+    return;
+  }
+
   searchTerm.innerHTML = repoTerm + " repo";
   repos.innerHTML = "";
 
@@ -43,7 +56,7 @@ function displayUserRepos(reposData, repoTerm) {
         ? "<i class='fa-solid fa-xmark'></i>"
         : "<i class='fa-solid fa-check'></i>";
 
-    repos.innerHTML += ` <a href="#" class="repo-item">
+    repos.innerHTML += ` <a href="./repo.html?repo=${reposItem.owner.login}/${reposItem.name}" class="repo-item">
             <span>${reposItem.owner.login}/${reposItem.name}</span>
             <div>${icon}</div>
           </a>`;

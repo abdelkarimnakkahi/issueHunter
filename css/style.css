@@ -195,8 +195,9 @@ input {
   color: #555;
 }
 
-.fa-solid {
+.repos .fa-solid {
   font-size: 1.5rem;
+  color: darkviolet;
 }
 
 @media (prefers-color-scheme: dark) {
